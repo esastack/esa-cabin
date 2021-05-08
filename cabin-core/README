@@ -1,0 +1,3 @@
+Only assembly the core modules which would be used by CabinContainer;
+The classes included by these modules would be loaded by delegating to Cabin Container ClassLoader;
+Other classes in these project would be load by BizClassLoader if used by Application code;
