@@ -11,10 +11,12 @@ ESA Cabin用于解决模块间类冲突。要解决的问题是，当一个应�
 举例说明依赖冲突。假设如下场景，如果工程需要引入两个框架：FrameworkA 和 FrameworkB，其中 FrameworkA 需要依赖版本号为
  1.0.0 的 DependencyC， FrameworkB 需要依赖版本号为 2.0.0 的 DependencyC，而这两个版本无法兼容(例如类名、方法名、参数有
  变化或者增删)：
+ 
 ![image.png](src/main/resources/1.png)
 
 为了彻底解决包冲突的问题，需要借助类隔离机制，将各个Framework打包为一个LibModule，使用各自的 ClassLoader 加载，业务代码
 使用单独的ClassLoader加载，达到相互隔离的目的:
+
 ![image.png](src/main/resources/2.png)
 
 ## Quick Start
