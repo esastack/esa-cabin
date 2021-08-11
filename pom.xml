@@ -20,7 +20,7 @@
     <groupId>io.esastack</groupId>
     <artifactId>esa-cabin</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <scm>
         <url>https://github.com/esastack/esa-commons</url>
