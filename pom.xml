@@ -22,6 +22,12 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
+    <name>ESA Cabin</name>
+    <description>
+        ESA Cabin is a lightweight class isolation container for Java applications.
+    </description>
+    <url>https://github.com/esastack</url>
+
     <scm>
         <url>https://github.com/esastack/esa-commons</url>
         <connection>scm:git:git://github.com/esastack/esa-cabin.git</connection>
