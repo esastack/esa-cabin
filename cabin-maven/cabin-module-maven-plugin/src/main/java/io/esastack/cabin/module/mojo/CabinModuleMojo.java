@@ -222,8 +222,8 @@ public class CabinModuleMojo extends AbstractMojo {
      * User can specify some artifact to shade to the top level too, these class will load by LibModuleClassloader.
      */
     private void constructFinalJar(final File moduleFile,
-                                  final File tmpModuleFile,
-                                  final Set<Artifact> shadedArtifacts) throws IOException {
+                                   final File tmpModuleFile,
+                                   final Set<Artifact> shadedArtifacts) throws IOException {
         shadedArtifacts.add(mavenProject.getArtifact());
         JarWriter writer = new JarWriter(moduleFile);
         try (JarFile tmpJarFile = new JarFile(tmpModuleFile)) {
@@ -413,7 +413,7 @@ public class CabinModuleMojo extends AbstractMojo {
     }
 
     private boolean isClassExportedOrImported(final String className) {
-        for (PropertiesConfig config: new PropertiesConfig[]{exported, imported}) {
+        for (PropertiesConfig config : new PropertiesConfig[]{exported, imported}) {
             if (config.getClasses() != null && config.getClasses().contains(className)) {
                 return true;
             }
@@ -813,8 +813,8 @@ public class CabinModuleMojo extends AbstractMojo {
      * resources and exported classes in order to:
      * 1. These classes will be loaded by BizModuleClassLoader, so they must be exported;
      * 2. Auto Configuration classed used with 'org.springframework.boot.autoconfigure.EnableAutoConfiguration'
-     *    will be parsed by ASM to get meta data from class file(bytes code), class file will be searched by
-     *    BizModuleClassLoader::getResource(), so the class file must be exported too;
+     * will be parsed by ASM to get meta data from class file(bytes code), class file will be searched by
+     * BizModuleClassLoader::getResource(), so the class file must be exported too;
      * 3. Other SPI implementation class files are exported by the way.
      */
     List<String> getSpringbootSpiImpls(final URL springFactoriesUrl) throws MojoExecutionException {

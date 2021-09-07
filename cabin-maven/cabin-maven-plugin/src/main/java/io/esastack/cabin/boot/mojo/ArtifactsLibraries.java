@@ -40,12 +40,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ArtifactsLibraries implements Libraries {
 

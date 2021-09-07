@@ -22,7 +22,6 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.TestClass;
 
 /**
- *
  * Used to run unit test
  */
 public class CabinJUnit4Runner extends BlockJUnit4ClassRunner {

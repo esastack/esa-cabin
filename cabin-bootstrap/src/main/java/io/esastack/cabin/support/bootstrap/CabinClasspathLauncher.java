@@ -72,12 +72,12 @@ public class CabinClasspathLauncher extends AbstractLauncher {
     private String findContainerUrl() {
         final List<String> containerUrls = new ArrayList<>();
         try {
-            for (URL url: classpathUrls) {
-                final String path = getUrlPath(url);
+            for (URL url : classpathUrls) {
+                final String path = getDecodedPath(url.getFile());
                 if (path.endsWith(Constants.JAR_FILE_SUFFIX)) {
                     try (JarFile jarFile = new JarFile(path)) {
                         if (ArchiveUtils.isCabinContainerJar(jarFile)) {
-                            containerUrls.add(url.toExternalForm());
+                            containerUrls.add(getDecodedPath(url.toExternalForm()));
                         }
                     }
                 }
@@ -100,12 +100,12 @@ public class CabinClasspathLauncher extends AbstractLauncher {
     private String[] findModuleURLs() {
         final List<String> filteredUrls = new ArrayList<>();
         try {
-            for (URL url: classpathUrls) {
-                final String path = getUrlPath(url);
+            for (URL url : classpathUrls) {
+                final String path = getDecodedPath(url.getFile());
                 if (path.endsWith(Constants.JAR_FILE_SUFFIX)) {
                     try (JarFile jarFile = new JarFile(path)) {
                         if (ArchiveUtils.isCabinModuleJar(jarFile)) {
-                            filteredUrls.add(url.toExternalForm());
+                            filteredUrls.add(getDecodedPath(url.toExternalForm()));
                         }
                     }
                 }
@@ -122,7 +122,7 @@ public class CabinClasspathLauncher extends AbstractLauncher {
     private String[] findBizUrls() throws Exception {
         final List<String> filteredUrls = new ArrayList<>();
         for (URL url : classpathUrls) {
-            final String urlString = url.toExternalForm();
+            final String urlString = getDecodedPath(url.toExternalForm());
             if (containerUrl.equals(urlString)) {
                 continue;
             }
@@ -135,7 +135,7 @@ public class CabinClasspathLauncher extends AbstractLauncher {
             }
             if (!matched) {
                 for (URL agentUrl : agentUrls) {
-                    if (getUrlPath(agentUrl).equals(urlString)) {
+                    if (getDecodedPath(agentUrl.getFile()).equals(urlString)) {
                         matched = true;
                         break;
                     }
@@ -148,7 +148,7 @@ public class CabinClasspathLauncher extends AbstractLauncher {
         return filteredUrls.toArray(new String[0]);
     }
 
-    private String getUrlPath(final URL url) throws UnsupportedEncodingException {
-        return URLDecoder.decode(url.getFile(), "UTF-8");
+    private String getDecodedPath(final String path) throws UnsupportedEncodingException {
+        return URLDecoder.decode(path, "UTF-8");
     }
 }

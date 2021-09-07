@@ -25,9 +25,9 @@ import org.junit.runner.notification.RunNotifier;
  * Why do we load the real Runner with TestBizClassLoader?
  * 1. The test class must be loaded by TestBizClassLoader;
  * 2. Spring/springboot load the beans with TCCL class loader, in order to assign the bean to
- *    ref field(which is loaded by TestBizClassLoader) of test class, TCCL must be TestBizClassLoader;
+ * ref field(which is loaded by TestBizClassLoader) of test class, TCCL must be TestBizClassLoader;
  * 3. Springboot scan and load the SPI implementations with TCCL, if the Spring classes are loaded by AppClassloader,
- *    the SPI implementations could not be assigned to the SPI refs.
+ * the SPI implementations could not be assigned to the SPI refs.
  * So, the best way is to load both Spring classes and test class with TestBizClassLoader.
  */
 public class CabinSpringRunner extends Runner implements Filterable, Sortable {

@@ -39,11 +39,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -53,7 +49,7 @@ import static io.esastack.cabin.common.constant.Constants.*;
 /**
  * Utility class that can be used to repackage an archive so that it can be executed using
  * '{@literal java -jar}'.
- *
+ * <p>
  * Added Cabin package logic such as Manifest handling.
  *
  * @author Phillip Webb
@@ -71,14 +67,14 @@ public class Repackager {
 
     private final File source;
     private final Log logger;
+    private final List<Library> moduleLibraries = new ArrayList<>();
+    private final List<Library> bizLibraries = new ArrayList<>();
     private String startClass;
     private File executableFatJar;
     private File baseDir;
     private boolean packageProvided;
     private String cabinVersion;
     private Library containerLibrary;
-    private final List<Library> moduleLibraries = new ArrayList<>();
-    private final List<Library> bizLibraries = new ArrayList<>();
 
     public Repackager(File source, Log logger) {
         if (source == null || logger == null) {

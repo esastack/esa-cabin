@@ -42,6 +42,7 @@ import java.io.IOException;
  * offset and length from "Central Directory" to the header of Archives.
  * To parse the ZIP file, we should start with EOCD, then get the "Central Directory", and the get the "file header",
  * at last we get "local file header" and read the content.
+ *
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @see <a href="http://en.wikipedia.org/wiki/Zip_%28file_format%29">Zip File Format</a>

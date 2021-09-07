@@ -73,11 +73,11 @@ public class CabinContainer {
      * <p>
      * this constructor is used while launching the application in classpath
      *
-     * @param containerURLString    the cabin core fat jar file path
-     * @param moduleURLStrings      the lib module fat jar file paths
-     * @param bizURLStrings         the biz classpath paths
-     * @param javaAgentURLStrings   the setup java agent jar file paths
-     * @param args                  set up main args
+     * @param containerURLString  the cabin core fat jar file path
+     * @param moduleURLStrings    the lib module fat jar file paths
+     * @param bizURLStrings       the biz classpath paths
+     * @param javaAgentURLStrings the setup java agent jar file paths
+     * @param args                set up main args
      */
     public CabinContainer(final String containerURLString,
                           final String[] moduleURLStrings,

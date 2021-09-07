@@ -38,17 +38,12 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
+import java.util.jar.*;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 
 /**
  * Writes JAR content, ensuring valid directory entries are always create and duplicate
- *
  *
  * @author Phillip Webb
  * @author Andy Wilkinson

@@ -35,12 +35,7 @@ import io.esastack.cabin.loader.data.RandomAccessData;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.zip.ZipEntry;
 
 /**
@@ -54,7 +49,7 @@ import java.util.zip.ZipEntry;
  * A typical Spring Boot application will have somewhere in the region of 10,500 entries
  * which should consume about 122K.
  * <p>
- *
+ * <p>
  * Record the File Header of every sub entry file in the Central Directory, and the get the Local File Header to
  * read the sub entry files.
  *

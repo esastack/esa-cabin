@@ -37,19 +37,10 @@ import io.esastack.cabin.loader.jar.Handler;
 import io.esastack.cabin.loader.jar.JarFile;
 import io.esastack.cabin.loader.util.UrlUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
 
@@ -58,6 +49,7 @@ import java.util.jar.Manifest;
  * <p>
  * {@link JarFile} and {@link JarFileArchive} could only represent Directories and jar files; Checks should be done
  * while using {@link JarFileArchive#getNestedArchives()}.
+ *
  * @author Phillip Webb
  * @author Andy Wilkinson
  */

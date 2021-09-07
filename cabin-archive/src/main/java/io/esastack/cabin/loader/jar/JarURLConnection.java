@@ -33,17 +33,8 @@ package io.esastack.cabin.loader.jar;
 
 import io.esastack.cabin.loader.data.RandomAccessData;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FilePermission;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.net.URLStreamHandler;
+import java.io.*;
+import java.net.*;
 import java.security.Permission;
 
 /**
@@ -103,7 +94,8 @@ final class JarURLConnection extends java.net.JarURLConnection {
     /**
      * The URLClassloader construct the possible class/resource path for a loading class, the URL of this path is
      * trying to used to get the content
-     * @param url the possible existing class file path
+     *
+     * @param url     the possible existing class file path
      * @param jarFile the jar file may contains the file
      * @return JarURLConnection or NOT_FOUND_CONNECTION
      * @throws IOException if IO ERROR

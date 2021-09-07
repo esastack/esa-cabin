@@ -17,14 +17,7 @@ package io.esastack.cabin.container.initialize;
 
 import io.esastack.cabin.common.exception.CabinRuntimeException;
 import io.esastack.cabin.common.log.CabinLoggerFactory;
-import io.esastack.cabin.container.processor.BizModuleLoadProcessor;
-import io.esastack.cabin.container.processor.BizModuleSetupProcessor;
-import io.esastack.cabin.container.processor.ContainerStateExportProcessor;
-import io.esastack.cabin.container.processor.JavaAgentModuleLoadProcessor;
-import io.esastack.cabin.container.processor.LibModuleExportProcessor;
-import io.esastack.cabin.container.processor.LibModuleLoadProcessor;
-import io.esastack.cabin.container.processor.LibModuleMergeProcessor;
-import io.esastack.cabin.container.processor.Processor;
+import io.esastack.cabin.container.processor.*;
 import io.esastack.cabin.container.service.CabinServiceManager;
 import org.slf4j.Logger;
 

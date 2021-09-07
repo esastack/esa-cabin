@@ -22,9 +22,9 @@ import java.net.URL;
 /**
  * Classes of unit test framework should be loaded by AppClassLoader:
  * 1. some of these classes is loaded by AppClassLoader before the CabinContainer is started, if then loaded by
- *    BizModuleClassLoader, some LinkErrs would happen;
+ * BizModuleClassLoader, some LinkErrs would happen;
  * 2. Cabin re-write a CabinSpringRunner, and loaded SpringRunner with UnitTestModuleClassLoader, its super class
- *    org.junit.runner.Runner should be loaded by AppClassLoader in order to be assigned correctly.
+ * org.junit.runner.Runner should be loaded by AppClassLoader in order to be assigned correctly.
  */
 public class UnitTestModuleClassLoader extends BizModuleClassLoader {
 

@@ -37,7 +37,7 @@ public class JavaAgentClassLoader extends AbstractClassLoader {
     private final URL agentUrl;
 
     public JavaAgentClassLoader(final URL agentUrl) {
-        super("Agent Module: " + agentUrl, new URL[] {agentUrl});
+        super("Agent Module: " + agentUrl, new URL[]{agentUrl});
         this.agentUrl = agentUrl;
     }
 

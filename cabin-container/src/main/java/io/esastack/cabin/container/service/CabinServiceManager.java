@@ -15,12 +15,7 @@
  */
 package io.esastack.cabin.container.service;
 
-import io.esastack.cabin.api.service.deploy.BizModuleFactoryService;
-import io.esastack.cabin.api.service.deploy.BizModuleLoadService;
-import io.esastack.cabin.api.service.deploy.JavaAgentModuleFactoryService;
-import io.esastack.cabin.api.service.deploy.JavaAgentModuleLoadService;
-import io.esastack.cabin.api.service.deploy.LibModuleFactoryService;
-import io.esastack.cabin.api.service.deploy.LibModuleLoadService;
+import io.esastack.cabin.api.service.deploy.*;
 import io.esastack.cabin.api.service.loader.ClassLoaderService;
 import io.esastack.cabin.api.service.share.LibModuleExportService;
 import io.esastack.cabin.api.service.share.SharedClassService;
@@ -30,19 +25,8 @@ import io.esastack.cabin.common.log.CabinLoggerFactory;
 import io.esastack.cabin.common.util.ClassLoaderUtils;
 import io.esastack.cabin.container.initialize.DefaultInitializer;
 import io.esastack.cabin.container.initialize.Initializer;
-import io.esastack.cabin.container.processor.BizModuleLoadProcessor;
-import io.esastack.cabin.container.processor.BizModuleSetupProcessor;
-import io.esastack.cabin.container.processor.ContainerStateExportProcessor;
-import io.esastack.cabin.container.processor.JavaAgentModuleLoadProcessor;
-import io.esastack.cabin.container.processor.LibModuleExportProcessor;
-import io.esastack.cabin.container.processor.LibModuleLoadProcessor;
-import io.esastack.cabin.container.processor.LibModuleMergeProcessor;
-import io.esastack.cabin.container.service.deploy.BizModuleFactoryServiceImpl;
-import io.esastack.cabin.container.service.deploy.BizModuleLoadServiceImpl;
-import io.esastack.cabin.container.service.deploy.JavaAgentModuleFactoryServiceImpl;
-import io.esastack.cabin.container.service.deploy.JavaAgentModuleLoadServiceImpl;
-import io.esastack.cabin.container.service.deploy.LibModuleFactoryServiceImpl;
-import io.esastack.cabin.container.service.deploy.LibModuleLoadServiceImpl;
+import io.esastack.cabin.container.processor.*;
+import io.esastack.cabin.container.service.deploy.*;
 import io.esastack.cabin.container.service.loader.ClassLoaderServiceImpl;
 import io.esastack.cabin.container.service.share.LibModuleExportServiceImpl;
 import io.esastack.cabin.container.service.share.SharedClassServiceImpl;

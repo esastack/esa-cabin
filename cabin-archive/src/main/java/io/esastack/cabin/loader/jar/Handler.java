@@ -31,18 +31,12 @@
  */
 package io.esastack.cabin.loader.jar;
 
-import io.esastack.cabin.loader.archive.Archive;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.URLStreamHandler;
+import java.net.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -50,16 +44,16 @@ import java.util.logging.Logger;
 
 /**
  * {@link URLStreamHandler} for Spring Boot loader {@link JarFile}s.
- *
+ * <p>
  * How the JVM load a class with {@link URLClassLoader}?
  * The URLS of the classloader and the class name are used to construct a URL as "...xxx.jar!/a.b.Test.class";
  * The {@link URLStreamHandler#openConnection(URL)} is called with the class file URL to get a {@link URLConnection}
  * and get an inputStream from this urlConnection to read content.
- *
+ * <p>
  * How this Handler read class file content from a fat jar?
  * All CabinClassLoader/LibModuleClassloader/BizModuleClassloader are constructed with the URLs creating by
  * {@link Archive#getUrl()} which have the handler set to this Handler.
- *
+ * <p>
  * Why we should set this package to "java.protocol.handler.pkgs" System property?
  * After the setting, this Handler would be the default URLStreamHandler, so any trying of get resources
  * or class files from the fat jars would be ok.

@@ -29,7 +29,7 @@ public class ArtifactPojo {
     private String classifier;
 
     /**
-     * @param format  groupId:artifactId or groupId:artifactId:classifier
+     * @param format groupId:artifactId or groupId:artifactId:classifier
      */
     public static ArtifactPojo extractArtifactPojo(final String format) {
         if (StringUtils.isBlank(format)) {
