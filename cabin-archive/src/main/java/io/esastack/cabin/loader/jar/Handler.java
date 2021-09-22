@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * <p>
  * How this Handler read class file content from a fat jar?
  * All CabinClassLoader/LibModuleClassloader/BizModuleClassloader are constructed with the URLs creating by
- * {@link Archive#getUrl()} which have the handler set to this Handler.
+ * Archive#getUrl() which have the handler set to this Handler.
  * <p>
  * Why we should set this package to "java.protocol.handler.pkgs" System property?
  * After the setting, this Handler would be the default URLStreamHandler, so any trying of get resources

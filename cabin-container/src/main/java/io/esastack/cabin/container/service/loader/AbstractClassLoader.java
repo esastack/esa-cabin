@@ -176,8 +176,14 @@ public abstract class AbstractClassLoader extends URLClassLoader {
 
     protected abstract Class<?> loadClass0(String name, boolean resolve) throws CabinLoaderException;
 
+    /**
+     * Pay attention to the priority of finding resource: jdk, exported, biz
+     */
     protected abstract Enumeration<URL> getResources0(String name) throws IOException;
 
+    /**
+     * Pay attention to the priority of finding resource: jdk, exported, biz
+     */
     protected abstract URL getResource0(String name);
 
     public Class<?> loadClassFromClasspath(final String name) throws CabinLoaderException {

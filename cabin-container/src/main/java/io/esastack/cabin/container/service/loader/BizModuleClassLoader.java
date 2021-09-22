@@ -93,9 +93,9 @@ public class BizModuleClassLoader extends AbstractClassLoader {
 
         enumerations.add(getJdkResources(name));
 
-        enumerations.add(getLocalResources(name));
-
         enumerations.add(getExportResources(name));
+
+        enumerations.add(getLocalResources(name));
 
         enumerations.add(getJavaAgentResources(name));
 
@@ -107,11 +107,11 @@ public class BizModuleClassLoader extends AbstractClassLoader {
         URL url = getJdkResource(name);
 
         if (url == null) {
-            url = getLocalResource(name);
+            url = getExportResource(name);
         }
 
         if (url == null) {
-            url = getExportResource(name);
+            url = getLocalResource(name);
         }
 
         if (url == null) {
