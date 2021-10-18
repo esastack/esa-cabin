@@ -248,17 +248,23 @@ public class CabinContainer {
             if (CabinStringUtil.isBlank(path)) {
                 continue;
             }
+
             final File file = new File(path);
             if (!file.exists()) {
-                LOGGER.error("-Dloader.path contains file or directory that does not exist: {}, it's ignored!", path);
-                continue;
+                throw new CabinRuntimeException(
+                        String.format("-Dloader.path contains path that does not exist: %s!", path));
             }
+            if (!file.isDirectory()) {
+                throw new CabinRuntimeException(
+                        String.format("-Dloader.path contains path that is not directory: %s!", path));
+            }
+
             final URL pathUrl;
             try {
                 pathUrl = file.toURI().toURL();
             } catch (MalformedURLException e) {
-                LOGGER.error("Invalid file({}) to URL", file.getPath(), e);
-                continue;
+                throw new CabinRuntimeException(
+                        String.format("-Dloader.path contains invalid path that cannot convert to URL: %s!", path));
             }
             pathUrls.add(pathUrl);
         }
@@ -267,6 +273,8 @@ public class CabinContainer {
             return bizUrls;
         }
 
+        //Make sure the paths configured by "-Dloader.path" are in the front of biz urls, that means these urls would
+        //be loaded prior to biz urls.
         final URL[] mergedUrls = new URL[bizUrls.length + pathUrls.size()];
         System.arraycopy(pathUrls.toArray(new URL[0]), 0, mergedUrls, 0, pathUrls.size());
         System.arraycopy(bizUrls, 0, mergedUrls, pathUrls.size(), bizUrls.length);

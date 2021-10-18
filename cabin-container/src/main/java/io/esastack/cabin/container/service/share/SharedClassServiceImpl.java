@@ -70,7 +70,8 @@ public class SharedClassServiceImpl implements SharedClassService {
         if (preLoaded.compareAndSet(false, true)) {
             classToModuleMap.forEach((className, module) -> {
                 final Class<?> clazz = getClassFromModule(className, module);
-                if (clazz == null) {
+                //Only throw exception while the class is inner class
+                if (clazz == null && !className.contains("$")) {
                     throw new CabinRuntimeException(String.format("Could not load class %s which is exported " +
                             "by module %s from it!", className, module.getName()));
                 }

@@ -30,7 +30,7 @@
     <url>https://github.com/esastack</url>
 
     <scm>
-        <url>https://github.com/esastack/esa-commons</url>
+        <url>https://github.com/esastack/esa-cabin</url>
         <connection>scm:git:git://github.com/esastack/esa-cabin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/esastack/esa-cabin.git</developerConnection>
         <tag>v0.0.1</tag>
@@ -50,40 +50,29 @@
         </license>
     </licenses>
 
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>ossrh</id>-->
-    <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-    <!--            <snapshots>-->
-    <!--                <enabled>true</enabled>-->
-    <!--            </snapshots>-->
-    <!--            <releases>-->
-    <!--                <enabled>false</enabled>-->
-    <!--            </releases>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
+        <repositories>
+            <repository>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+                <releases>
+                    <enabled>false</enabled>
+                </releases>
+            </repository>
+        </repositories>
 
-    <!--    <distributionManagement>-->
-    <!--        <snapshotRepository>-->
-    <!--            <id>ossrh</id>-->
-    <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-    <!--        </snapshotRepository>-->
-    <!--        <repository>-->
-    <!--            <id>ossrh</id>-->
-    <!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-    <!--        </repository>-->
-    <!--    </distributionManagement>-->
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+        <distributionManagement>
+            <snapshotRepository>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            </snapshotRepository>
+            <repository>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            </repository>
+        </distributionManagement>
 
     <properties>
         <slf4j.version>1.7.25</slf4j.version>
