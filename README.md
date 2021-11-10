@@ -1,7 +1,7 @@
 # Cabin
 ![Build](https://github.com/esastack/esa-cabin/workflows/Build/badge.svg?branch=main)
 [![codecov](https://codecov.io/gh/esastack/esa-cabin/branch/main/graph/badge.svg?token=CCQBCBQJP6)](https://codecov.io/gh/esastack/esa-cabin)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.esastack/cabin-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.esastack/restlight-cabin/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.esastack/esa-cabin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.esastack/esa-cabin/)
 [![GitHub license](https://img.shields.io/github/license/esastack/esa-cabin)](https://github.com/esastack/esa-cabin/blob/main/LICENSE)
 
 Cabin是一款Java类隔离框架，用于隔离各个模块之间、模块和业务之间使用的第三方依赖库。使用Cabin后，模块SDK将只是用自己指定
