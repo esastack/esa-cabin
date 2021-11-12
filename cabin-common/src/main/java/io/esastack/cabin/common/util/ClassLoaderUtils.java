@@ -49,7 +49,7 @@ public class ClassLoaderUtils {
     }
 
     /**
-     * the java agent premain setup arguments format: -javaagent:{jarpath}[=argsString]
+     * The java agent premain setup arguments format: -javaagent:{jarpath}[=argsString]
      */
     public static URL[] getAgentClassPath() {
         final List<String> inputArguments = AccessController.doPrivileged(

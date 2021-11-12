@@ -30,17 +30,20 @@ public class CabinAppBootstrap {
 
     private static final String REBOOT_THREAD_NAME = "main";
 
-    private static volatile String mainClass;
-
+    /**
+     * Start a new thread to re-run the application, the previous main thread would block until the new thread exit
+     * and no more application code would execute.
+     * @param args the application launch arguments
+     */
     public static void run(final String[] args) {
         if (args == null) {
             throw new CabinRuntimeException("args should not be null");
         }
         if (!RelaunchMarkUtil.isRelaunched()) {
-            mainClass = deduceMainClass();
+            final String mainClass = deduceMainClass();
             final String bootClazz = CabinAppBootstrap.class.getName();
             final IsolatedThreadGroup threadGroup = new IsolatedThreadGroup(bootClazz);
-            final ReLaunchRunner runner = new ReLaunchRunner(bootClazz, REBOOT_METHOD_NAME, args);
+            final ReLaunchRunner runner = new ReLaunchRunner(bootClazz, REBOOT_METHOD_NAME, mainClass, args);
             final Thread rebootThread = new Thread(threadGroup, runner, REBOOT_THREAD_NAME);
             rebootThread.start();
             ReLaunchRunner.join(threadGroup);
@@ -49,7 +52,7 @@ public class CabinAppBootstrap {
         }
     }
 
-    private static void reboot(final String[] args) throws Exception {
+    private static void reboot(final String mainClass, final String[] args) throws Exception {
         new CabinClasspathLauncher(mainClass, ClassLoaderUtils.getSystemClassPaths()).launch(args);
     }
 

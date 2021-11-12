@@ -24,8 +24,6 @@ import java.util.Map;
  */
 public interface SharedClassService {
 
-    int DEFAULT_CACHE_MAP_CAPACITY = 8192;
-
     void addSharedClass(final String className, final Class<?> clazz);
 
     void addSharedClass(final String className, final Module module);

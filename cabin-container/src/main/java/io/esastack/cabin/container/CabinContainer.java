@@ -46,14 +46,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class CabinContainer {
 
-    private static final Logger LOGGER;
-
     private static final String PATH = "loader.path";
 
-    static {
-        CabinLoggerFactory.setLevel(System.getProperty(Constants.CABIN_LOG_LEVEL, "INFO"));
-        LOGGER = CabinLoggerFactory.getLogger(CabinContainer.class);
-    }
+    private static final Logger LOGGER = CabinLoggerFactory.getLogger(CabinContainer.class);
 
     private final CabinBootContext cabinBootContext;
 
