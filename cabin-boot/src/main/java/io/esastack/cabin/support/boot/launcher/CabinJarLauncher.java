@@ -28,6 +28,9 @@ import static io.esastack.cabin.common.constant.Constants.MANIFEST_START_CLASS;
 
 public class CabinJarLauncher extends AbstractLauncher {
 
+    /**
+     * URL of this archive is opened by the default URLStreamHandler, so it could not be used to create CabinContainer.
+     */
     private final Archive executableArchive;
 
     private CabinJarLauncher() {

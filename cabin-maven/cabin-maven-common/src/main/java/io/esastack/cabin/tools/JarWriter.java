@@ -48,7 +48,7 @@ import java.util.zip.ZipEntry;
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
-public class JarWriter implements LoaderClassesWriter {
+public class JarWriter implements LoaderClassesWriter, Closeable{
 
     /**
      * classes used to boot cabin container should be shaded to root classpath

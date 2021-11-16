@@ -29,7 +29,7 @@ import static io.esastack.cabin.common.constant.Constants.*;
 
 /**
  * This Abstract class use the URL of cabin jars、biz、lib modules to create and start the container;
- * Implementations should collect the URLs from Fat Jar or IDE classpath;
+ * Implementations should collect the URLs from Fat Jar or classpath;
  * <p>
  * Classes of cabin-common/cabin-archive/cabin-boot would be shaded to the top directory of executable biz jar for
  * starting the fat jar by java -jar, so these modules should not depend on third part lib, or else
@@ -50,7 +50,7 @@ public abstract class AbstractLauncher {
     public Object launch(final String[] args) throws Exception {
 
         //set fat jar url handler, using the custom URLStreamHandler to handle the fatjar nested URLs.
-        //The cabin core artifact is a fatjar no matter in IDE of fatjar setup, so the Handler is registered at the
+        //The cabin core artifact is a fatjar no matter in classpath or fatjar setup, so the Handler is registered at the
         //beginning of the program.
         JarFile.registerUrlProtocolHandler();
 
@@ -91,7 +91,7 @@ public abstract class AbstractLauncher {
 
     /**
      * User the cabin-core artifact to create cabin container classloader, it's a fatjar with conf and libs directories.
-     * @param containerArchive for IDE setup, it's a normal jar file; for fatjar setup, it's a nest jar file.
+     * @param containerArchive for classpath setup, it's a normal jar file; for fatjar setup, it's a nest jar file.
      * @return CabinContainerClassloader
      * @throws Exception exception
      */

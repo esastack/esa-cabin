@@ -46,10 +46,7 @@ public abstract class AbstractClassLoader extends URLClassLoader {
     private static final Logger LOGGER = CabinLoggerFactory.getLogger(AbstractClassLoader.class);
 
     private static final String[] CABIN_LOAD_PACKAGES = new String[]{
-            "io.esastack.cabin.api",
-            "io.esastack.cabin.common",
-            "io.esastack.cabin.loader",
-            "io.esastack.cabin.support.bootstrap"
+            "io.esastack.cabin"
     };
 
     protected final String moduleName;
