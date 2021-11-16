@@ -40,9 +40,10 @@ public class CabinSpringRunner extends Runner implements Filterable, Sortable {
         final ClassLoader oldTCCL = Thread.currentThread().getContextClassLoader();
         try {
             UnitTestLauncher.start();
-            Thread.currentThread().setContextClassLoader(UnitTestLauncher.getTestBizClassLoader());
-            final Class<?> springRunnerClass = UnitTestLauncher.getTestBizClassLoader().loadClass(SPRING_RUNNER);
-            final Class<?> testClazz = UnitTestLauncher.getTestBizClassLoader().loadClass(testClass.getName());
+            final ClassLoader bizModuleClassLoader = UnitTestLauncher.getTestBizClassLoader();
+            Thread.currentThread().setContextClassLoader(bizModuleClassLoader);
+            final Class<?> springRunnerClass = bizModuleClassLoader.loadClass(SPRING_RUNNER);
+            final Class<?> testClazz = bizModuleClassLoader.loadClass(testClass.getName());
             this.delegate = (Runner) springRunnerClass.getConstructor(Class.class).newInstance(testClazz);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
