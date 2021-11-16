@@ -25,12 +25,19 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * By default, java agent jar URLs will be included in the SystemClassLoader classpath, if the APP is launched by
- * CabinClassPathLauncher, the BizModuleClassLoader can load agent classes in local biz urls;
- * But, if the APP is launched in a fat jar, the BizModuleClassLoader can not load agent classes in local biz urls;
- * And, for LibModuleClassLoader, it could not be loaded by local lib urls.
- * To make all the agent classes loaded by one unique ClassLoader, we filtered the 'Java Agent URLs' from biz URLs,
- * And create a new type of ClassLoader to load them.
+ * When the agent classes are loaded?
+ * while jvm define a class, it will check if any agent are provided to instrument the class, and the enhance class
+ * byte code are used to create the Class of the class with the original classloader, while the weaved in code is
+ * executed, the agent classes are load by the class classloader.
+ * Default handling of JVM?
+ * By default, java agent jar URLs will be included in the SystemClassLoader classpath, if cabin is not used, no matter
+ * using java -jar or java -cp to setup a program, all the agent urls and biz urls are in the SystemClassloader.
+ * Handling of Cabin?
+ * + While cabin is used, agent urls can be handled as biz urls, and there is no isolation between agent and biz urls.
+ * + Cabin use JavaAgentClassLoader to load agent classes for isolation.
+ * + Agent classes can load classes from biz: imported classes, provided classes.
+ * + Agent Classes can load classes from lib: exported classes, provided classes.
+ * + Biz and lib can load classes from agent: classes used in weaved in code.
  */
 public class JavaAgentClassLoader extends AbstractClassLoader {
 

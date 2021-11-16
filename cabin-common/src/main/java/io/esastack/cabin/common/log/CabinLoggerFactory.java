@@ -17,19 +17,16 @@ package io.esastack.cabin.common.log;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
+import io.esastack.cabin.common.constant.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * For set cabin log level dynamic, use the System property
+ * Use the System property to set cabin log level.
  */
 public class CabinLoggerFactory {
 
-    private static volatile Level level;
-
-    public static void setLevel(final String level) {
-        CabinLoggerFactory.level = Level.toLevel(level);
-    }
+    private static final Level level = Level.toLevel(System.getProperty(Constants.CABIN_LOG_LEVEL, "INFO"));
 
     public static Logger getLogger(final Class<?> type) {
         final Logger logger = LoggerFactory.getLogger(type);

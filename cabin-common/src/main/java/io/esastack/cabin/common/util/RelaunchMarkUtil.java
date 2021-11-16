@@ -17,18 +17,29 @@ package io.esastack.cabin.common.util;
 
 import java.lang.reflect.Field;
 
+/**
+ * This class is used to check whether the program are running in the cabin container environment.
+ * While the application start in the IDE:
+ * The {@link #isRelaunched()} would return false at the first time of the application main class running,
+ * so the re-run operation continues; after cabin create BizModuleClassLoader and before starting the application
+ * main class again, the {@link #relaunched} field is set to true, so thr re-run operation would be ignored.
+ * While using fatjar to setup a application:
+ * The application main class would run after biz module exported, the {@link #relaunched} field is set to true,
+ * no re-run operation would happen.
+ */
 public class RelaunchMarkUtil {
 
     private static volatile boolean relaunched = false;
 
-    public static void markAsLaunched(ClassLoader classLoader) {
+    public static void markAsLaunched(ClassLoader bizClassLoader) {
         try {
-            final Class<?> clazz = classLoader.loadClass(RelaunchMarkUtil.class.getCanonicalName());
+            final Class<?> clazz = bizClassLoader.loadClass(RelaunchMarkUtil.class.getCanonicalName());
             final Field field = clazz.getDeclaredField("relaunched");
             field.setAccessible(true);
             field.set(null, true);
         } catch (Throwable e) {
             e.printStackTrace();
+            System.exit(-1);
         }
     }
 

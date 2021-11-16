@@ -28,13 +28,14 @@ import java.util.List;
 import static io.esastack.cabin.common.constant.Constants.*;
 
 /**
- * This Abstract class use the URL of CabinContainer、biz、modules to create and start the container;
+ * This Abstract class use the URL of cabin jars、biz、lib modules to create and start the container;
  * Implementations should collect the URLs from Fat Jar or IDE classpath;
  * <p>
- * cabin-common/cabin-archive/cabin-boot would shade to top directory of executable biz jar, so these modules
- * will not depend on third part lib;
+ * Classes of cabin-common/cabin-archive/cabin-boot would be shaded to the top directory of executable biz jar for
+ * starting the fat jar by java -jar, so these modules should not depend on third part lib, or else
+ * ClassNotFoundException would be thrown at Runtime.
  * <p>
- * Only premain java agents are supported now.
+ * Only premain java agents are supported for isolation at current version.
  */
 public abstract class AbstractLauncher {
 
@@ -48,7 +49,9 @@ public abstract class AbstractLauncher {
 
     public Object launch(final String[] args) throws Exception {
 
-        //set fat jar url handler
+        //set fat jar url handler, using the custom URLStreamHandler to handle the fatjar nested URLs.
+        //The cabin core artifact is a fatjar no matter in IDE of fatjar setup, so the Handler is registered at the
+        //beginning of the program.
         JarFile.registerUrlProtocolHandler();
 
         //merge arguments
@@ -86,6 +89,12 @@ public abstract class AbstractLauncher {
         return arguments;
     }
 
+    /**
+     * User the cabin-core artifact to create cabin container classloader, it's a fatjar with conf and libs directories.
+     * @param containerArchive for IDE setup, it's a normal jar file; for fatjar setup, it's a nest jar file.
+     * @return CabinContainerClassloader
+     * @throws Exception exception
+     */
     private ClassLoader createCabinClassLoader(final Archive containerArchive) throws Exception {
         final List<Archive> containerClasspath = containerArchive.getNestedArchives(entry ->
                 (entry.isDirectory() && entry.getName().endsWith(NESTED_CONF_DIRECTORY)) ||

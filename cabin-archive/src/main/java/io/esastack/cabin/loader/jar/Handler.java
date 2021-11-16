@@ -32,6 +32,8 @@
 package io.esastack.cabin.loader.jar;
 
 
+import io.esastack.cabin.loader.archive.Archive;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
@@ -43,28 +45,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * {@link URLStreamHandler} for Spring Boot loader {@link JarFile}s.
+ * {@link URLStreamHandler} for Cabin loader {@link JarFile}s.
  * <p>
  * How the JVM load a class with {@link URLClassLoader}?
- * The URLS of the classloader and the class name are used to construct a URL as "...xxx.jar!/a.b.Test.class";
+ * The URLS of the classloader ucp and the class name construct a file URL like "...xxx.jar!/a.b.Test.class";
  * The {@link URLStreamHandler#openConnection(URL)} is called with the class file URL to get a {@link URLConnection}
- * and get an inputStream from this urlConnection to read content.
+ * and an inputStream can be got from this urlConnection to read content of the class file.
  * <p>
  * How this Handler read class file content from a fat jar?
  * All CabinClassLoader/LibModuleClassloader/BizModuleClassloader are constructed with the URLs creating by
- * Archive#getUrl() which have the handler set to this Handler.
+ * {@link Archive#getUrl()} which have the handler set to this Handler.
  * <p>
  * Why we should set this package to "java.protocol.handler.pkgs" System property?
  * After the setting, this Handler would be the default URLStreamHandler, so any trying of get resources
  * or class files from the fat jars would be ok.
  *
+ * NOTE: in order to be found as a URL protocol handler:
+ *  + this class must be public;
+ *  + must be named Handler and must be in a package ending '.jar'
+ *
  * @author Phillip Webb
  * @author Andy Wilkinson
+ * @author scofildwang
  */
 public class Handler extends URLStreamHandler {
-
-    // NOTE: in order to be found as a URL protocol handler, this class must be public,
-    // must be named Handler and must be in a package ending '.jar'
 
     private static final String JAR_PROTOCOL = "jar:";
 

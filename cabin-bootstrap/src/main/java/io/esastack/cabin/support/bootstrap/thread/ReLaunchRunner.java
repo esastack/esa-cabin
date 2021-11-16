@@ -23,11 +23,17 @@ public class ReLaunchRunner implements Runnable {
 
     private final String bootMethod;
 
+    private final String mainClass;
+
     private final String[] args;
 
-    public ReLaunchRunner(final String bootClazz, final String bootMethod, final String[] args) {
+    public ReLaunchRunner(final String bootClazz,
+                          final String bootMethod,
+                          final String mainClass,
+                          final String[] args) {
         this.bootClazz = bootClazz;
         this.bootMethod = bootMethod;
+        this.mainClass = mainClass;
         this.args = args;
     }
 
@@ -56,12 +62,12 @@ public class ReLaunchRunner implements Runnable {
         final ClassLoader classLoader = thread.getContextClassLoader();
         try {
             final Class<?> startClass = classLoader.loadClass(bootClazz);
-            final Method entryMethod = startClass.getDeclaredMethod(bootMethod, String[].class);
+            final Method entryMethod = startClass.getDeclaredMethod(bootMethod, String.class, String[].class);
             entryMethod.setAccessible(true);
-            entryMethod.invoke(null, (Object) this.args);
+            entryMethod.invoke(null, mainClass, this.args);
         } catch (NoSuchMethodException ex) {
             final Exception wrappedEx = new Exception(
-                    "The specified mainClass doesn't contain a " + "main method with appropriate signature.", ex);
+                    "The specified mainClass doesn't contain a main method with appropriate signature.", ex);
             thread.getThreadGroup().uncaughtException(thread, wrappedEx);
         } catch (Throwable ex) {
             thread.getThreadGroup().uncaughtException(thread, ex);

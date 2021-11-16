@@ -34,7 +34,7 @@ public class DefaultInitializer implements Initializer {
     private final List<Processor> bootProcessors = new ArrayList<>();
 
     /**
-     * BizModuleSetupProcessor must be the last processor, cause it may block the thread.
+     * BizModuleSetupProcessor must be the last processor, because it may block the thread.
      */
     public DefaultInitializer() {
         this.bootProcessors.add(CabinServiceManager.get().getService(JavaAgentModuleLoadProcessor.class));

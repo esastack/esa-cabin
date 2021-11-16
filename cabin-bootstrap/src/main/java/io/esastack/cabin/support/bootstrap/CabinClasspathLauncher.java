@@ -30,6 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 
+/**
+ * Start the cabin container in IED environment, collecting cabin core jars, lib module urls and biz urls from
+ * SystemClassLoader classpath.
+ */
 public class CabinClasspathLauncher extends AbstractLauncher {
 
     private final String mainClass;
