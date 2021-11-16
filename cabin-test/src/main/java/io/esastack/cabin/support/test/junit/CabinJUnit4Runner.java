@@ -35,8 +35,8 @@ public class CabinJUnit4Runner extends BlockJUnit4ClassRunner {
         final ClassLoader oldTCCL = Thread.currentThread().getContextClassLoader();
         try {
             UnitTestLauncher.start();
-            Thread.currentThread().setContextClassLoader(UnitTestLauncher.getTestBizClassLoader());
             final ClassLoader bizModuleClassLoader = UnitTestLauncher.getTestBizClassLoader();
+            Thread.currentThread().setContextClassLoader(bizModuleClassLoader);
             return super.createTestClass(bizModuleClassLoader.loadClass(testClass.getName()));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
