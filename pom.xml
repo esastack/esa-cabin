@@ -428,7 +428,7 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>io/esastack/cabin/loader/jar/**</exclude>
+                                <exclude>io/esastack/cabin/loader/**</exclude>
                                 <exclude>io/esastack/cabin/log/**</exclude>
                                 <exclude>io/esastack/cabin/tools/**</exclude>
                                 <exclude>io/esastack/cabin/boot/mojo/**</exclude>
