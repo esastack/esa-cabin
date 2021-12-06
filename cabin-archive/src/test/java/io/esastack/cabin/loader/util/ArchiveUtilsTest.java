@@ -19,6 +19,7 @@ public class ArchiveUtilsTest {
             ArchiveUtils.getFile(null);
             Assert.fail();
         } catch (Exception e) {
+            //ignore
         }
         URL resourceUrl = null;
         try {
@@ -26,6 +27,7 @@ public class ArchiveUtilsTest {
             Assert.assertNull(ArchiveUtils.getFile(resourceUrl));
             Assert.fail();
         } catch (Exception e) {
+            //ignore
         }
 
         resourceUrl = ArchiveTest.class.getClassLoader().getResource("main-cabin-executable.jar");
