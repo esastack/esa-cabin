@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <property name="baseDir" value="./log/biz"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${baseDir}/test.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{5} - %msg%n</Pattern>
+        </encoder>
+        <RollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${baseDir}/test-%d{yyyy-MM-dd}.log</FileNamePattern>
+        </RollingPolicy>
+    </appender>
+
+<!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <charset>UTF-8</charset>-->
+<!--            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{5} - %msg%n</Pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

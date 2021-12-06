@@ -428,8 +428,11 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>esa/commons/jmh/**</exclude>
-                                <exclude>esa/commons/concurrencytest/**</exclude>
+                                <exclude>io/esastack/cabin/loader/jar/**</exclude>
+                                <exclude>io/esastack/cabin/log/**</exclude>
+                                <exclude>io/esastack/cabin/tools/**</exclude>
+                                <exclude>io/esastack/cabin/boot/mojo/**</exclude>
+                                <exclude>io/esastack/cabin/module/mojo/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>

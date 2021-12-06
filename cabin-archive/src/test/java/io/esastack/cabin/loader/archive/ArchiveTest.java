@@ -22,6 +22,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URL;
 import java.util.jar.JarEntry;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
 public class ArchiveTest {
@@ -32,6 +33,18 @@ public class ArchiveTest {
         final Archive archive = ArchiveUtils.createArchiveFromUrl(url);
 
         Assert.assertTrue(archive instanceof ExplodedArchive);
+
+        URL rs = archive.getResource(null);
+        Assert.assertNull(rs);
+        rs = archive.getResource("test");
+        Assert.assertNull(rs);
+        rs = archive.getResource("resource.file");
+        Assert.assertNotNull(rs);
+
+
+        Manifest manifest = archive.getManifest();
+        Assert.assertNotNull(manifest);
+        Assert.assertNotNull(archive.toString());
 
         final ExplodedArchive explodedArchive = (ExplodedArchive) archive;
         Assert.assertFalse(explodedArchive.getNestedArchives().isEmpty());
@@ -55,6 +68,14 @@ public class ArchiveTest {
         final Archive archive = ArchiveUtils.createArchiveFromUrl(url);
 
         Assert.assertTrue(archive instanceof JarFileArchive);
+
+        URL rs = archive.getResource(null);
+        Assert.assertNull(rs);
+        rs = archive.getResource("test");
+        Assert.assertNull(rs);
+        rs = archive.getResource("APP-INF/classes/logback.xml");
+        Assert.assertNotNull(rs);
+        Assert.assertNotNull(archive.toString());
 
         final JarFileArchive jarFileArchive = (JarFileArchive) archive;
         Assert.assertFalse(jarFileArchive.getNestedArchives().isEmpty());
