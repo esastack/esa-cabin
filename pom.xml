@@ -426,15 +426,6 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-<!--                            <excludes>-->
-<!--                                <exclude>io/esastack/cabin/loader/**</exclude>-->
-<!--                                <exclude>io/esastack/cabin/log/**</exclude>-->
-<!--                                <exclude>io/esastack/cabin/tools/**</exclude>-->
-<!--                                <exclude>io/esastack/cabin/boot/mojo/**</exclude>-->
-<!--                                <exclude>io/esastack/cabin/module/mojo/**</exclude>-->
-<!--                            </excludes>-->
-                        </configuration>
                     </execution>
                     <execution>
                         <id>coverage-report</id>
