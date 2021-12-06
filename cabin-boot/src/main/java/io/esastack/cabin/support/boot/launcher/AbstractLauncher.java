@@ -50,8 +50,8 @@ public abstract class AbstractLauncher {
     public Object launch(final String[] args) throws Exception {
 
         //set fat jar url handler, using the custom URLStreamHandler to handle the fatjar nested URLs.
-        //The cabin core artifact is a fatjar no matter in classpath or fatjar setup, so the Handler is registered at the
-        //beginning of the program.
+        //The cabin core artifact is a fatjar no matter in classpath or fatjar setup, so the Handler is registered
+        // at the beginning of the program.
         JarFile.registerUrlProtocolHandler();
 
         //merge arguments
