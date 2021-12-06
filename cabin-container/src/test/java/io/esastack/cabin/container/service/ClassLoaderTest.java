@@ -16,7 +16,7 @@ public class ClassLoaderTest {
     }
 
     @Test
-    public void JavaAgentClassLoaderTest() throws Exception {
+    public void javaAgentClassLoaderTest() throws Exception {
         JavaAgentClassLoader classLoader =
                 new JavaAgentClassLoader(ClassLoader.getSystemResource("cabin-sample-app-0.1.0.jar"));
         Assert.assertNotNull(classLoader.getAgentUrl());
