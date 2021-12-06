@@ -30,13 +30,30 @@
         <dependency>
             <groupId>io.esastack</groupId>
             <artifactId>cabin-core</artifactId>
-            <version>${project.version}</version>
+            <version>${cabin.version}</version>
         </dependency>
         <dependency>
             <groupId>io.esastack</groupId>
             <artifactId>cabin-sample-lib-module</artifactId>
             <classifier>cabin-classifier</classifier>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.esastack</groupId>
+            <artifactId>cabin-sample-lib-module2</artifactId>
+            <classifier>cabin-classifier</classifier>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.esastack</groupId>
+            <artifactId>cabin-sample-lib-module3</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.esastack</groupId>
+            <artifactId>cabin-sample-agent</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -35,7 +35,10 @@ import java.util.List;
 public class CabinContainerTest {
 
     private static final URL executableJarArchive = Thread.currentThread().getContextClassLoader()
-            .getResource("cabin-sample-app-0.1.0-SNAPSHOT.jar");
+            .getResource("cabin-sample-app-0.1.0.jar");
+
+    private static final URL agentJarArchive = Thread.currentThread().getContextClassLoader()
+            .getResource("cabin-sample-agent-0.1.0.jar");
 
     private static final String mainClass = "io.esastack.cabin.sample.app.CabinTestApp";
 
@@ -44,14 +47,24 @@ public class CabinContainerTest {
     @Test
     public void containerTest() throws Exception {
         final CabinContainer container = new CabinContainer(executableJarArchive.toExternalForm(),
-                new String[0], new String[]{mainClass, mainMethod});
+                new String[]{agentJarArchive.toExternalForm()}, new String[]{mainClass, mainMethod});
         container.start();
 
         Assert.assertTrue(container.isStarted());
         Assert.assertFalse(container.getExportedClasses().isEmpty());
         Assert.assertNotNull(container.getBizModuleClassLoader());
         Assert.assertTrue(container.getBizModuleClassLoader() instanceof BizModuleClassLoader);
-        Assert.assertEquals(1, container.getLoadedModule().size());
+        Assert.assertEquals(2, container.getLoadedModule().size());
+
+        LibModuleClassLoader libModuleClassLoader =
+                (LibModuleClassLoader) container.getLibModuleClassLoader("io.esastack_cabin-sample-lib-module");
+        Assert.assertNotNull(libModuleClassLoader);
+
+        Assert.assertNotNull(libModuleClassLoader.loadClass("io.esastack.cabin.container.domain.BizModule"));
+        Assert.assertNotNull(libModuleClassLoader.loadClass("io.esastack.cabin.sample.lib.module.CabinTestLibModule"));
+        Assert.assertNotNull(libModuleClassLoader.loadClass("io.esastack.cabin.sample.app.CabinTestApp"));
+        Assert.assertNotNull(libModuleClassLoader.getResource("export.file"));
+        Assert.assertNotNull(libModuleClassLoader.getResources("export.file"));
 
         final String moduleName = container.getLoadedModule().get(0);
         Assert.assertTrue(container.moduleLoaded(moduleName));

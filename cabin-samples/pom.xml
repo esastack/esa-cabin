@@ -17,16 +17,25 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>esa-cabin</artifactId>
-        <groupId>io.esastack</groupId>
-        <version>0.1.0</version>
-    </parent>
+    <artifactId>cabin-samples</artifactId>
+    <groupId>io.esastack</groupId>
+    <version>0.1.0</version>
 
     <packaging>pom</packaging>
 
+    <properties>
+        <cabin.version>0.1.1</cabin.version>
+    </properties>
+
+    <modules>
+        <module>cabin-sample-agent</module>
+        <module>cabin-sample-app</module>
+        <module>cabin-sample-lib-module</module>
+        <module>cabin-sample-lib-module2</module>
+        <module>cabin-sample-lib-module3</module>
+    </modules>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cabin-samples</artifactId>
 
 </project>
