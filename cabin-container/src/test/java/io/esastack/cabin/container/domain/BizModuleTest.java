@@ -1,6 +1,5 @@
 package io.esastack.cabin.container.domain;
 
-import io.esastack.cabin.container.domain.BizModule;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,6 +20,7 @@ public class BizModuleTest {
             bizModule.start();
             Assert.fail();
         } catch (Throwable throwable) {
+            //ignore
         }
     }
 }
