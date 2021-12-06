@@ -134,7 +134,7 @@ public class LibModuleClassLoader extends AbstractClassLoader {
             return clazz;
         }
 
-        //load agent classes, if BIZ class is enhanced in java agent, it's inner code may use the classes of agent.
+        //load agent classes, there may be agent to enhance lib module classes too, as biz classes.
         clazz = loadAgentClass(name);
         if (clazz != null) {
             debugClassLoadMessage(clazz, "loadAgentClass", name);

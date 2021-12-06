@@ -66,6 +66,9 @@ public class LibModuleExportProcessor implements Processor {
             if (exportError.get() != null) {
                 throw new CabinRuntimeException("Failed to load classes and resources from module!", exportError.get());
             }
+            //preload classes after all lib modules has been exported, avoiding failures caused by:
+            // A class extends B class, module of B has not been exported, so loading A class would failed, caused by
+            // B class not found.
             if (!LazyLoadExportDetector.isLazyLoad()) {
                 libModuleExportService.preLoadAllSharedClasses();
             }

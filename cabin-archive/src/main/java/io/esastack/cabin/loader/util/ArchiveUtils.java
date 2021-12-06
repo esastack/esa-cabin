@@ -36,20 +36,11 @@ import static io.esastack.cabin.common.constant.Constants.*;
 
 public class ArchiveUtils {
 
-    /**
-     * URL protocol for a file in the file system: "file"
-     */
-    public static final String URL_PROTOCOL_FILE = "file";
+    private static final String URL_PROTOCOL_FILE = "file";
 
-    /**
-     * URL protocol for a JBoss file system resource: "vfsfile"
-     */
-    public static final String URL_PROTOCOL_VFSFILE = "vfsfile";
+    private static final String URL_PROTOCOL_VFSFILE = "vfsfile";
 
-    /**
-     * URL protocol for a general JBoss VFS resource: "vfs"
-     */
-    public static final String URL_PROTOCOL_VFS = "vfs";
+    private static final String URL_PROTOCOL_VFS = "vfs";
 
     /**
      * @param url if it's a normal url. If it's a dir, an ExplodedArchive is created, else a JarFileArchive is created.

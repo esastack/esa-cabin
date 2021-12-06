@@ -46,17 +46,6 @@ import java.util.jar.Manifest;
 
 import static io.esastack.cabin.common.constant.Constants.*;
 
-/**
- * Utility class that can be used to repackage an archive so that it can be executed using
- * '{@literal java -jar}'.
- * <p>
- * Added Cabin package logic such as Manifest handling.
- *
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @author Stephane Nicoll
- * @author Madhura Bhave
- */
 public class Repackager {
 
     private static final String CABIN_VERSION_ATTRIBUTE = "Cabin-Version";
@@ -176,35 +165,21 @@ public class Repackager {
             destination.delete();
         }
 
-        JarWriter writer = new JarWriter(destination);
-
-        //write app classes and dependencies
-        JarFile bizSource = new JarFile(source);
-        try {
-            try {
+        try (JarWriter writer = new JarWriter(destination)) {
+            //write app classes and dependencies
+            try (JarFile bizSource = new JarFile(source)) {
                 Manifest manifest = buildAppManifest(bizSource);
                 writer.writeManifest(manifest);
                 writer.writeEntries(bizSource, new RenamingEntryTransformer(APP_CLASSES_DIRECTORY));
                 writeNestedLibraries(bizLibraries, APP_LIB_DIRECTORY, writer);
-            } finally {
-                bizSource.close();
             }
 
             //write container and modules
-            JarFile containerSource = new JarFile(containerLibrary.getFile().getAbsoluteFile());
-            try {
+            try (JarFile containerSource = new JarFile(containerLibrary.getFile().getAbsoluteFile())) {
                 writeConfigFiles(new File(baseDir, CONF_BASE_DIR), writer);
                 writer.writeBootstrapEntry(containerSource);
                 writeNestedLibraries(Collections.singletonList(containerLibrary), CABIN_CORE_DIRECTORY, writer);
                 writeNestedLibraries(moduleLibraries, CABIN_MODULE_DIRECTORY, writer);
-            } finally {
-                containerSource.close();
-            }
-        } finally {
-            try {
-                writer.close();
-            } catch (Exception ex) {
-                // Ignore
             }
         }
     }

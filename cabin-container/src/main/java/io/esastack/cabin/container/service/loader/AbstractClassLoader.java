@@ -46,10 +46,7 @@ public abstract class AbstractClassLoader extends URLClassLoader {
     private static final Logger LOGGER = CabinLoggerFactory.getLogger(AbstractClassLoader.class);
 
     private static final String[] CABIN_LOAD_PACKAGES = new String[]{
-            "io.esastack.cabin.api",
-            "io.esastack.cabin.common",
-            "io.esastack.cabin.loader",
-            "io.esastack.cabin.support.bootstrap"
+            "io.esastack.cabin"
     };
 
     protected final String moduleName;
@@ -284,7 +281,7 @@ public abstract class AbstractClassLoader extends URLClassLoader {
     }
 
     /**
-     * Why we need to load Agent Classes ?
+     * Why we need to load Agent Classes:
      * The classes in agent jars may be used to enhance the Biz classes and Lib classes, using javassist or asm;
      * So the agent classes and methods may appear in the enhanced class byte code, as these classes executing, the
      * agent classes would be loaded by the Classloader of the enhanced class.
