@@ -15,6 +15,7 @@
  */
 package io.esastack.cabin.container;
 
+import io.esastack.cabin.common.constant.Constants;
 import io.esastack.cabin.common.util.CabinContainerUtil;
 import io.esastack.cabin.common.util.ClassLoaderUtils;
 import io.esastack.cabin.container.service.loader.BizModuleClassLoader;
@@ -40,12 +41,24 @@ public class CabinContainerTest {
     private static final URL agentJarArchive = Thread.currentThread().getContextClassLoader()
             .getResource("cabin-sample-agent-0.1.0.jar");
 
+    private static final URL cabinCoreArchive = Thread.currentThread().getContextClassLoader()
+            .getResource("cabin-core-0.1.0-SNAPSHOT.jar");
+
     private static final String mainClass = "io.esastack.cabin.sample.app.CabinTestApp";
 
     private static final String mainMethod = "main";
 
+    static {
+        System.setProperty(Constants.CABIN_LOG_LEVEL, "DEBUG");
+    }
+
     @Test
     public void containerTest() throws Exception {
+        final CabinContainer cpContainer = new CabinContainer(cabinCoreArchive.toExternalForm(),
+                new String[0], new String[0], new String[]{agentJarArchive.toExternalForm()},
+                new String[]{mainClass, mainMethod});
+        Assert.assertNotNull(cpContainer);
+
         final CabinContainer container = new CabinContainer(executableJarArchive.toExternalForm(),
                 new String[]{agentJarArchive.toExternalForm()}, new String[]{mainClass, mainMethod});
         container.start();
