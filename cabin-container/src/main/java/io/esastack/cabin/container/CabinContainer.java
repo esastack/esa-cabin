@@ -246,13 +246,13 @@ public class CabinContainer {
 
             final File file = new File(path);
             if (!file.exists()) {
-                throw new CabinRuntimeException(
-                        String.format("-Dloader.path contains path that does not exist: %s!", path));
+                LOGGER.warn(String.format("-Dloader.path contains path that does not exist: %s!", path));
+                continue;
             }
-            if (!file.isDirectory()) {
-                throw new CabinRuntimeException(
-                        String.format("-Dloader.path contains path that is not directory: %s!", path));
-            }
+//            if (!file.isDirectory()) {
+//                throw new CabinRuntimeException(
+//                        String.format("-Dloader.path contains path that is not directory: %s!", path));
+//            }
 
             final URL pathUrl;
             try {

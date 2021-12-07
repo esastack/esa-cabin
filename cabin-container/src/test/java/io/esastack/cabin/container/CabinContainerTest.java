@@ -50,7 +50,7 @@ public class CabinContainerTest {
 
     static {
         System.setProperty(Constants.CABIN_LOG_LEVEL, "DEBUG");
-        System.setProperty("loader.path", "conf");
+        System.setProperty("loader.path", System.getProperty("java.class.path"));
     }
 
     @Test
