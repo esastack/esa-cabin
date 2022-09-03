@@ -38,7 +38,7 @@ public class UnitTestLauncher extends CabinClasspathLauncher {
     public static synchronized void start() {
         if (cabinContainer == null) {
             try {
-                final UnitTestLauncher launcher = new UnitTestLauncher(ClassLoaderUtils.getSystemClassPaths());
+                final UnitTestLauncher launcher = new UnitTestLauncher(ClassLoaderUtils.getApplicationClassPaths());
                 cabinContainer = launcher.launch(new String[0]);
             } catch (Exception e) {
                 throw new CabinRuntimeException("Failed to start UnitTestLauncher!", e);

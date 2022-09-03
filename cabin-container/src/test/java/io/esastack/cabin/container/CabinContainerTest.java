@@ -101,7 +101,7 @@ public class CabinContainerTest {
 
     @Test
     public void classpathLauncherTest() throws Exception {
-        final List<URL> urls = new ArrayList<>(Arrays.asList(ClassLoaderUtils.getSystemClassPaths()));
+        final List<URL> urls = new ArrayList<>(Arrays.asList(ClassLoaderUtils.getApplicationClassPaths()));
         final URL cabinCoreUrl = CabinContainerTest.class.getClassLoader()
                 .getResource("cabin-core-0.1.0-SNAPSHOT.jar");
         urls.add(cabinCoreUrl);

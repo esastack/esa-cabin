@@ -10,7 +10,7 @@ public class ClassLoaderTest {
 
     @Test
     public void unitTestModuleClassLoaderTest() throws Exception {
-        UnitTestModuleClassLoader loader = new UnitTestModuleClassLoader(ClassLoaderUtils.getSystemClassPaths());
+        UnitTestModuleClassLoader loader = new UnitTestModuleClassLoader(ClassLoaderUtils.getApplicationClassPaths());
         Assert.assertNotNull(loader.loadClass("org.junit.Test"));
         Assert.assertNotNull(loader.loadClass("io.esastack.cabin.container.service.ClassLoaderTest"));
     }

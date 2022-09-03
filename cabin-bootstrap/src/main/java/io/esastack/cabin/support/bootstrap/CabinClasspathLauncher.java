@@ -139,7 +139,7 @@ public class CabinClasspathLauncher extends AbstractLauncher {
             }
             if (!matched) {
                 for (URL agentUrl : agentUrls) {
-                    if (getDecodedPath(agentUrl.getFile()).equals(urlString)) {
+                    if (getDecodedPath(agentUrl.toExternalForm()).equals(urlString)) {
                         matched = true;
                         break;
                     }

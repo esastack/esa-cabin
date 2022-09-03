@@ -33,7 +33,7 @@ public class RelaunchMarkUtil {
 
     public static void markAsLaunched(ClassLoader bizClassLoader) {
         try {
-            final Class<?> clazz = bizClassLoader.loadClass(RelaunchMarkUtil.class.getCanonicalName());
+            final Class<?> clazz = bizClassLoader.loadClass("io.esastack.cabin.common.util.RelaunchMarkUtil");
             final Field field = clazz.getDeclaredField("relaunched");
             field.setAccessible(true);
             field.set(null, true);

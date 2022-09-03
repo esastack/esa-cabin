@@ -26,18 +26,18 @@ import java.util.List;
 
 /**
  * When the agent classes are loaded?
- * while jvm define a class, it will check if any agent are provided to instrument the class, and the enhance class
- * byte code are used to create the Class of the class with the original classloader, while the weaved in code is
- * executed, the agent classes are load by the class classloader.
+ * while jvm define a class, it will check if any agents are provided to instrument the class, and the enhanced class
+ * byte code are used to create the new Class Object with the original classloader, while the weaved-in code is
+ * executed, the agent classes are load by the original classloader.
  * Default handling of JVM?
  * By default, java agent jar URLs will be included in the SystemClassLoader classpath, if cabin is not used, no matter
  * using java -jar or java -cp to setup a program, all the agent urls and biz urls are in the SystemClassloader.
  * Handling of Cabin?
  * + While cabin is used, agent urls can be handled as biz urls, and there is no isolation between agent and biz urls.
  * + Cabin use JavaAgentClassLoader to load agent classes for isolation.
- * + Agent classes can load classes from biz: imported classes, provided classes.
+ * + Agent classes can load classes from biz: default imported classes(spring/jedis/slf4j, etc.), provided classes.
  * + Agent Classes can load classes from lib: exported classes, provided classes.
- * + Biz and lib can load classes from agent: classes used in weaved in code.
+ * + Biz and lib can load classes from agent: classes used in weaved-in code.
  */
 public class JavaAgentClassLoader extends AbstractClassLoader {
 
@@ -54,8 +54,12 @@ public class JavaAgentClassLoader extends AbstractClassLoader {
 
     /**
      * Why we need to load class from Biz and Libs?
+     * The Pre-Main class would be loaded by SystemClassLoader while the Jvm started;
+     * If some code are weaved in, the code may include another Class in the agent jar and this class may depend on
+     * some biz/module classes, this class would be loaded by agent classloader, so agent classloader must delegate
+     * class loading to biz and module classloader too;
      * Because the agent implementation may dependency some provided jars which is provided by users;
-     * In normal setup way, these jars will loaded by AppClassloader, same as agent jars.
+     * In normal setup way, these jars will loaded by AppClassloader, same classloader of agent jars.
      */
     @Override
     protected Class<?> loadClass0(final String name, final boolean resolve) throws CabinLoaderException {
@@ -81,10 +85,8 @@ public class JavaAgentClassLoader extends AbstractClassLoader {
             return clazz;
         }
 
-        /*
-         * load import classes from biz classloader, some classes such as Spring/Jedis/SPI/Log4j/Logback/Slf4j, etc,
-         * should always be loaded from Biz first
-         */
+        //load import classes from biz classloader, some classes such as Spring/Jedis/SPI/Log4j/Logback/Slf4j, etc,
+        //should always be loaded from Biz first
         clazz = loadImportClassFromBiz(name);
         if (clazz != null) {
             debugClassLoadMessage(clazz, "loadImportClassFromBiz", name);

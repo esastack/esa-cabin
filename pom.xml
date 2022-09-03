@@ -83,7 +83,9 @@
         <junit.version>4.12</junit.version>
         <testng.version>6.14.3</testng.version>
 
+        <!-- TODO: If update the assembly version, must set the compress config to false.-->
         <maven.assembly.plugin>2.4</maven.assembly.plugin>
+        <!--<maven.assembly.plugin>3.3.0</maven.assembly.plugin>-->
         <maven.plugin.plugin>3.4</maven.plugin.plugin>
         <surefire.version>2.20</surefire.version>
 
@@ -110,6 +112,7 @@
         <module>cabin-boot</module>
         <module>cabin-core</module>
         <module>cabin-test</module>
+        <module>cabin-agent</module>
         <!--        <module>cabin-samples</module>-->
         <!--        <module>cabin-samples/cabin-sample-lib-module</module>-->
         <!--        <module>cabin-samples/cabin-sample-app</module>-->

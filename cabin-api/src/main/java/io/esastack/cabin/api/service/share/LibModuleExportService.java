@@ -23,5 +23,5 @@ public interface LibModuleExportService {
 
     int exportClasses(String moduleName) throws CabinRuntimeException;
 
-    public void preLoadAllSharedClasses();
+    void preLoadAllSharedClasses();
 }

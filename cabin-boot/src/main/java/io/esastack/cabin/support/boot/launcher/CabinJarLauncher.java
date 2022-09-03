@@ -68,7 +68,7 @@ public class CabinJarLauncher extends AbstractLauncher {
     private Archive deduceArchive() throws Exception {
         final ProtectionDomain protectionDomain = getClass().getProtectionDomain();
         final CodeSource codeSource = protectionDomain.getCodeSource();
-        final URI location = (codeSource == null ? null : codeSource.getLocation().toURI());
+        final URI location = codeSource == null ? null : codeSource.getLocation().toURI();
         if (location == null) {
             throw new IllegalStateException("Unable to determine code source for " + getClass());
         }

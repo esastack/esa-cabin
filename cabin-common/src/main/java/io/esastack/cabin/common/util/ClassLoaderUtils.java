@@ -21,13 +21,16 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ClassLoaderUtils {
+
+    public static ClassLoader getTCCL() {
+        return Thread.currentThread().getContextClassLoader();
+    }
 
     public static ClassLoader pushTCCL(final ClassLoader classLoader) {
         final ClassLoader oldTCCL = Thread.currentThread().getContextClassLoader();
@@ -39,7 +42,37 @@ public class ClassLoaderUtils {
         Thread.currentThread().setContextClassLoader(classLoader);
     }
 
-    public static URL[] getSystemClassPaths() throws MalformedURLException {
+    /**
+     * Merge the URLs of thread context classloader with of SystemClassLoader, for being compatible
+     * with this situation:
+     * + Spring boot fat jar launch and
+     * + Inject CabinBootstrap.run(args) with java agent.
+     * If just for being compatible with java fat jar launch, which need users add code
+     * CabinBootstrap.run(args), cabin-core will be in the spring boot fat jar, TCCL urls will be enough.
+     * @return application classpath URLs.
+     * @throws MalformedURLException exception
+     */
+    public static URL[] getApplicationClassPaths() throws MalformedURLException {
+        ClassLoader loader = getTCCL();
+        if (loader == null) {
+            loader = ClassLoader.getSystemClassLoader();
+        }
+        if (loader instanceof URLClassLoader) {
+            final URL[] urls = ((URLClassLoader) loader).getURLs();
+            final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+            if (loader != systemClassLoader && systemClassLoader instanceof URLClassLoader) {
+                final URL[] systemPaths = ((URLClassLoader) systemClassLoader).getURLs();
+                Map<String, URL> urlMap = new HashMap<>(urls.length);
+                for (URL url: urls) {
+                    urlMap.put(url.toExternalForm(), url);
+                }
+                for (URL url: systemPaths) {
+                    urlMap.put(url.toExternalForm(), url);
+                }
+                return urlMap.values().toArray(new URL[0]);
+            }
+            return urls;
+        }
         final String[] classPaths = System.getProperty("java.class.path").split(System.getProperty("path.separator"));
         final URL[] urls = new URL[classPaths.length];
         for (int i = 0; i < classPaths.length; i++) {

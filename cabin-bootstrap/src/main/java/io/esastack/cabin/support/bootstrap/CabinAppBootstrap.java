@@ -53,15 +53,22 @@ public class CabinAppBootstrap {
     }
 
     private static void reboot(final String mainClass, final String[] args) throws Exception {
-        new CabinClasspathLauncher(mainClass, ClassLoaderUtils.getSystemClassPaths()).launch(args);
+        new CabinClasspathLauncher(mainClass, ClassLoaderUtils.getApplicationClassPaths()).launch(args);
     }
 
+    /**
+     * Load main class with TCCL, for being compatible
+     * with this situation:
+     * + Spring boot fat jar launch and
+     * + Inject CabinBootstrap.run(args) with java agent.
+     * @return application main class name
+     */
     private static String deduceMainClass() {
         for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
             if ("main".equals(element.getMethodName())) {
                 try {
                     final String mainClazz = element.getClassName();
-                    final Class<?> mainClass = Class.forName(mainClazz);
+                    final Class<?> mainClass = Class.forName(mainClazz, false, ClassLoaderUtils.getTCCL());
                     final Method method = mainClass.getDeclaredMethod("main", String[].class);
                     if (Modifier.isPublic(method.getModifiers()) && Modifier.isStatic(method.getModifiers())) {
                         return mainClazz;

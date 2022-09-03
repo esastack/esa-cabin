@@ -35,10 +35,7 @@ import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarFile;
 
 public abstract class AbstractClassLoader extends URLClassLoader {
@@ -79,6 +76,7 @@ public abstract class AbstractClassLoader extends URLClassLoader {
             throw new CabinRuntimeException("class name is blank");
         }
 
+        //synchronized as its super class.
         synchronized (getClassLoadingLock(name)) {
             Handler.setUseFastConnectionExceptions(true);
             try {
@@ -281,30 +279,43 @@ public abstract class AbstractClassLoader extends URLClassLoader {
     }
 
     /**
-     * Why we need to load Agent Classes:
+     * * Why we need to load Agent Classes:
      * The classes in agent jars may be used to enhance the Biz classes and Lib classes, using javassist or asm;
-     * So the agent classes and methods may appear in the enhanced class byte code, as these classes executing, the
-     * agent classes would be loaded by the Classloader of the enhanced class.
+     * So the agent classes and methods may appear in the enhanced class byte code, while these classes being executing,
+     * the agent classes would be loaded by the Classloader of the caller class.
      * Here, only classes in agent local classpath should be loaded.
+     * @param name classname to be loaded
+     * @return Class object
+     * @throws CabinLoaderException if multiple classed loaed from different agents
      */
     protected Class<?> loadAgentClass(final String name) throws CabinLoaderException {
+        final Map<URL, Class<?>> classes = new HashMap<>();
         for (Map.Entry<String, ClassLoader> entry : classLoaderService.getJavaAgentModuleClassLoaders().entrySet()) {
             final String agentUrl = entry.getKey();
-            final AbstractClassLoader classLoader = (AbstractClassLoader) entry.getValue();
+            final JavaAgentClassLoader classLoader = (JavaAgentClassLoader) entry.getValue();
             try {
                 final Class<?> clazz = classLoader.loadClassFromClasspath(name);
                 if (clazz != null) {
-                    return clazz;
+                    classes.put(classLoader.getAgentUrl(), clazz);
                 }
-            } catch (ClassNotFoundException e) {
-                //ignore
             } catch (Throwable t) {
-                throw new CabinLoaderException(
-                        String.format("Failed to load agent class %s from Agent classloader of %s", name, agentUrl), t);
+                LOGGER.warn(String.format("Failed to load agent class %s from Agent classloader of %s",
+                        name, agentUrl), t);
             }
 
         }
-        return null;
+        if (classes.isEmpty()) {
+            return null;
+        } else if (classes.size() == 1) {
+            return classes.values().iterator().next();
+        } else {
+            final StringBuilder errMsg = new StringBuilder();
+            errMsg.append("Found multiple classes from different agents: ");
+            for (URL url : classes.keySet()) {
+                errMsg.append("\n").append(url.toExternalForm());
+            }
+            throw new CabinLoaderException(errMsg.toString());
+        }
     }
 
     protected Enumeration<URL> getJdkResources(final String name) throws IOException {
@@ -331,6 +342,12 @@ public abstract class AbstractClassLoader extends URLClassLoader {
         return ((AbstractClassLoader) classLoaderService.getBizModuleClassLoader()).getLocalResources(name);
     }
 
+    /**
+     * Why we need to load Agent Resources:
+     * 1. Agent may implement some SPI of biz and lib module, to load these implementations, the resource files must
+     * can be found by biz and lib module classloader;
+     * 2. Just for found some resource bringing by agent file.
+     */
     @SuppressWarnings("unchecked")
     protected Enumeration<URL> getJavaAgentResources(final String name) throws IOException {
         final List<Enumeration<URL>> enumerations = new ArrayList<>();
