@@ -163,6 +163,10 @@ public final class Constants {
 
     public static final String CABIN_DUPLICATED_MODULE_IGNORE = "cabin.module.duplicated.ignore";
 
+    public static final String CABIN_MODULE_DIR = "cabin.module.dir";
+
+    public static final String CABIN_MODULE_DIR_DEFAULT = "cabin_module_dir";
+
     public static final String CHARACTER_ANY = "*";
     //------------------------------------SYSTEM PROPERTY CONSTANTS END------------------------------------
 

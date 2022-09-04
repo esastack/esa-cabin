@@ -23,8 +23,11 @@ import io.esastack.cabin.loader.archive.Archive;
 import io.esastack.cabin.loader.util.ArchiveUtils;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,15 +51,47 @@ public class LibModuleMergeProcessor implements Processor {
 
     public void process(final CabinBootContext cabinBootContext) throws CabinRuntimeException {
         try {
+            final Map<String, Archive> externalModules = parseLibModulesFromExternalDir();
             final Map<String, Archive> containerModules =
                     parseLibModulesFromContainerArchive(cabinBootContext.getContainerArchive());
-            final Map<String, Archive> modules = parseLibModulesFromURLs(cabinBootContext.getModuleUrls());
-            //use plugins in container archive prioritized
+            final Map<String, Archive> modules = parseLibModulesFromURLs(cabinBootContext.getModuleUrls(), false);
+            //module prioritized: external modules > nest modules > user dependencies
             modules.putAll(containerModules);
+            modules.putAll(externalModules);
             cabinBootContext.setModuleArchives(parseNestLibModulesRecursively(modules));
-        } catch (IOException e) {
+        } catch (Throwable e) {
             throw new CabinRuntimeException(e.getMessage(), e);
         }
+    }
+
+    public Map<String, Archive> parseLibModulesFromExternalDir() {
+        final String dir = System.getProperty(CABIN_MODULE_DIR, CABIN_MODULE_DIR_DEFAULT);
+        if (CabinStringUtil.isNotBlank(dir)) {
+            final File file = new File(dir);
+            if (file.exists() && file.isDirectory()) {
+                final File[] nestFiles = file.listFiles();
+                if (nestFiles != null) {
+                    final List<URL> urls = new ArrayList<>(nestFiles.length);
+                    for (File f: nestFiles) {
+                        if (f.isFile()) {
+                            try {
+                                urls.add(f.toURI().toURL());
+                            } catch (MalformedURLException e) {
+                                LOGGER.warn("Invalid file configured in dir!", e);
+                            }
+                        }
+                    }
+                    if (urls.size() != 0) {
+                        try {
+                            return parseLibModulesFromURLs(urls.toArray(new URL[0]), true);
+                        } catch (IOException e) {
+                            // never common here.
+                        }
+                    }
+                }
+            }
+        }
+        return new HashMap<>();
     }
 
     private Map<String, Archive> parseLibModulesFromContainerArchive(final Archive containerArchive)
@@ -97,19 +132,28 @@ public class LibModuleMergeProcessor implements Processor {
         return containerModules;
     }
 
-    private Map<String, Archive> parseLibModulesFromURLs(final URL[] moduleUrls) throws IOException {
+    private Map<String, Archive> parseLibModulesFromURLs(
+            final URL[] moduleUrls, final boolean ignoreException) throws IOException {
         final Map<String, Archive> urlModules = new HashMap<>();
         if (moduleUrls != null) {
             for (URL moduleUrl : moduleUrls) {
-                final Archive module = ArchiveUtils.createArchiveFromUrl(moduleUrl);
-                final String moduleName = module.getManifest().getMainAttributes().getValue(MANIFEST_MODULE_NAME);
-                if (CabinStringUtil.isBlank(moduleName)) {
-                    throw new CabinRuntimeException("Invalid module Manifest, blank Module-Name, "
-                            + moduleUrl.toExternalForm());
-                }
-                if (urlModules.put(moduleName, module) != null) {
-                    throw new CabinRuntimeException(
-                            String.format("Duplicated module {%s} found in biz urls", moduleName));
+                try {
+                    final Archive module = ArchiveUtils.createArchiveFromUrl(moduleUrl);
+                    final String moduleName = module.getManifest().getMainAttributes().getValue(MANIFEST_MODULE_NAME);
+                    if (CabinStringUtil.isBlank(moduleName)) {
+                        throw new CabinRuntimeException("Invalid module Manifest, blank Module-Name, "
+                                + moduleUrl.toExternalForm());
+                    }
+                    if (urlModules.put(moduleName, module) != null) {
+                        throw new CabinRuntimeException(
+                                String.format("Duplicated module {%s} found in biz urls", moduleName));
+                    }
+                } catch (Throwable e) {
+                    if (ignoreException) {
+                        LOGGER.warn("Failed to parse lib module from " + moduleUrl.toExternalForm());
+                    } else {
+                        throw e;
+                    }
                 }
             }
         }
