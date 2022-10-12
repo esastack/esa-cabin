@@ -53,6 +53,14 @@ public class CabinContainerUtil {
         return bizClassLoader;
     }
 
+    public static void installModule(final String moduleJarUrl) {
+        delegate2CabinContainer("installModule", new Object[] {moduleJarUrl});
+    }
+
+    public static void uninstallModule(final String moduleName) {
+        delegate2CabinContainer("uninstallModule", new Object[] {moduleName});
+    }
+
     /**
      * CabinContainer would have not overloaded methods
      */

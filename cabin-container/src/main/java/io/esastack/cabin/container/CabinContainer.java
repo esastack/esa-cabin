@@ -18,11 +18,11 @@ package io.esastack.cabin.container;
 import io.esastack.cabin.api.service.deploy.LibModuleLoadService;
 import io.esastack.cabin.api.service.loader.ClassLoaderService;
 import io.esastack.cabin.api.service.share.SharedClassService;
-import io.esastack.cabin.common.constant.Constants;
 import io.esastack.cabin.common.exception.CabinRuntimeException;
 import io.esastack.cabin.common.log.CabinLoggerFactory;
 import io.esastack.cabin.common.util.CabinStringUtil;
 import io.esastack.cabin.container.domain.LibModule;
+import io.esastack.cabin.container.dynamic.DynamicLoadProcessor;
 import io.esastack.cabin.container.initialize.CabinBootContext;
 import io.esastack.cabin.container.initialize.Initializer;
 import io.esastack.cabin.container.service.CabinServiceManager;
@@ -157,6 +157,20 @@ public class CabinContainer {
 
     public boolean isStarted() {
         return this.started.get();
+    }
+
+    public void installModule(final String libJarUrl) {
+        if (!this.started.get()) {
+            throw new CabinRuntimeException("CabinContainer has not been started!");
+        }
+        CabinServiceManager.get().getService(DynamicLoadProcessor.class).installModule(libJarUrl);
+    }
+
+    public void uninstallModule(final String libJarUrl) {
+        if (!this.started.get()) {
+            throw new CabinRuntimeException("CabinContainer has not been started!");
+        }
+        CabinServiceManager.get().getService(DynamicLoadProcessor.class).uninstallModule(libJarUrl);
     }
 
     public Map<String, Class<?>> getExportedClasses() {

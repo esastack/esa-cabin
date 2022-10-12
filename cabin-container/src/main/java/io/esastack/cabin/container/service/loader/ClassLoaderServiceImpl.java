@@ -118,4 +118,9 @@ public class ClassLoaderServiceImpl implements ClassLoaderService {
         this.libModuleClassLoaders.put(param.getModuleName(), libModuleClassLoader);
         return libModuleClassLoader;
     }
+
+    @Override
+    public ClassLoader destroyLibModuleClassLoader(String moduleName) {
+        return this.libModuleClassLoaders.remove(moduleName);
+    }
 }

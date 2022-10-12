@@ -22,4 +22,6 @@ import io.esastack.cabin.loader.archive.Archive;
 public interface LibModuleFactoryService<M extends Module> {
 
     M createModule(String name, Archive archive) throws CabinRuntimeException;
+
+    void destroyModule(String name) throws CabinRuntimeException;
 }

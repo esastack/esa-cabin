@@ -15,7 +15,7 @@
  */
 package io.esastack.cabin.container.service.share;
 
-import io.esastack.cabin.api.service.deploy.LibModuleLoadService;
+import io.esastack.cabin.api.service.loader.ClassLoaderService;
 import io.esastack.cabin.api.service.share.SharedResourceService;
 
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SharedResourceServiceImpl implements SharedResourceService {
 
     private final ConcurrentHashMap<String, List<ClassLoader>> resourceClassLoaderMap = new ConcurrentHashMap<>();
-    private volatile LibModuleLoadService libModuleLoadService;
+    private volatile ClassLoaderService classLoaderService;
 
-    public void setLibModuleLoadService(final LibModuleLoadService service) {
-        libModuleLoadService = service;
+    public void setClassLoaderService(ClassLoaderService classLoaderService) {
+        this.classLoaderService = classLoaderService;
     }
 
     @Override
@@ -37,8 +37,17 @@ public class SharedResourceServiceImpl implements SharedResourceService {
     }
 
     @Override
-    public void addExportClassLoader(final String name, final ClassLoader classLoader) {
-        final List<ClassLoader> classLoaders = resourceClassLoaderMap.computeIfAbsent(name, s -> new ArrayList<>());
+    public void addExportClassLoader(final String resourceName, final ClassLoader classLoader) {
+        List<ClassLoader> classLoaders = resourceClassLoaderMap.computeIfAbsent(resourceName, s -> new ArrayList<>());
         classLoaders.add(classLoader);
+    }
+
+    @Override
+    public void destroyModuleResources(String moduleName) {
+        ClassLoader cl = classLoaderService.getLibModuleClassLoader(moduleName);
+        resourceClassLoaderMap.entrySet().removeIf(entry -> {
+            entry.getValue().removeIf(en -> en.equals(cl));
+            return entry.getValue().isEmpty();
+        });
     }
 }

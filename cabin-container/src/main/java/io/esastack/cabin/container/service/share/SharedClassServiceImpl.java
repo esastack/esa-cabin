@@ -49,10 +49,13 @@ public class SharedClassServiceImpl implements SharedClassService {
     //Map<LibModule, Object> is used as concurrent hash set; one package may be exported by multiple module.
     private final Map<String, Map<LibModule, Object>> packageToModuleMap;
 
+    private final Map<String, Map<String, Object>> moduleExportedClasses;
+
     public SharedClassServiceImpl() {
         this.cachedClasses = new ConcurrentHashMap<>();
         this.classToModuleMap = new ConcurrentHashMap<>();
         this.packageToModuleMap = new ConcurrentHashMap<>();
+        this.moduleExportedClasses = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -132,6 +135,7 @@ public class SharedClassServiceImpl implements SharedClassService {
                                 String.format("Class export conflicted, %s is exported by ClassLoader %s and %s",
                                         className, prevClazz.getClassLoader(), prevLoadedClass.getClassLoader()));
                     }
+                    storeModuleExportedClass(prevLoadedModule.getName(), className);
                     return prevLoadedClass;
                 }
             }
@@ -173,6 +177,26 @@ public class SharedClassServiceImpl implements SharedClassService {
         return classToModuleMap.containsKey(className);
     }
 
+    /**
+     * Remove from class/package map first, avoiding added to cachedClasses after destroy module.
+     * @param moduleName module to destroy
+     */
+    @Override
+    public void destroyModuleClasses(final String moduleName) {
+        classToModuleMap.entrySet().removeIf(entry -> entry.getValue().getName().equals(moduleName));
+        packageToModuleMap.entrySet().removeIf(entry -> {
+            entry.getValue().entrySet().removeIf(en -> en.getKey().getName().equals(moduleName));
+            return entry.getValue().isEmpty();
+        });
+        final Map<String, Object> classesMap = moduleExportedClasses.remove(moduleName);
+        if (classesMap == null || classesMap.isEmpty()) {
+            return;
+        }
+        for (String clazzName: classesMap.keySet()) {
+            cachedClasses.remove(clazzName);
+        }
+    }
+
     private Class<?> getCachedClass(final String className) {
         return cachedClasses.get(className);
     }
@@ -183,10 +207,16 @@ public class SharedClassServiceImpl implements SharedClassService {
             final Class<?> result = getClassFromModule(className, module);
             if (result != null) {
                 cachedClasses.put(className, result);
+                storeModuleExportedClass(module.getName(), className);
                 return result;
             }
         }
         return null;
+    }
+
+    private void storeModuleExportedClass(final String moduleName, final String clazzName) {
+        moduleExportedClasses.computeIfAbsent(moduleName, name -> new ConcurrentHashMap<>());
+        moduleExportedClasses.get(moduleName).put(clazzName, sentinel);
     }
 
     private Class<?> getClassFromModule(final String className, final LibModule module) {

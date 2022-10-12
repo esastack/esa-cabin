@@ -39,4 +39,6 @@ public interface ClassLoaderService {
 
     ClassLoader createLibModuleClassLoader(LibModuleClassLoaderParam param);
 
+    ClassLoader destroyLibModuleClassLoader(String moduleName);
+
 }

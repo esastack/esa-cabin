@@ -153,4 +153,10 @@ public class LibModuleExportServiceImpl implements LibModuleExportService {
 
         return exportedCount;
     }
+
+    @Override
+    public void destroyModule(String moduleName) {
+        sharedClassService.destroyModuleClasses(moduleName);
+        sharedResourceService.destroyModuleResources(moduleName);
+    }
 }

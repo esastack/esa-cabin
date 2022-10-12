@@ -35,7 +35,6 @@ public class LibModuleLoadServiceImpl implements LibModuleLoadService {
     private static Logger LOGGER = CabinLoggerFactory.getLogger(LibModuleLoadServiceImpl.class);
 
     private final ConcurrentMap<String, LibModule> modules = new ConcurrentHashMap<>();
-
     private volatile LibModuleFactoryService<LibModule> moduleFactory;
 
     public void setModuleFactory(final LibModuleFactoryServiceImpl service) {
@@ -56,6 +55,12 @@ public class LibModuleLoadServiceImpl implements LibModuleLoadService {
     @Override
     public Module getModule(final String name) {
         return modules.get(name);
+    }
+
+    @Override
+    public Module destroyModule(String name) {
+        moduleFactory.destroyModule(name);
+        return modules.remove(name);
     }
 
     @Override

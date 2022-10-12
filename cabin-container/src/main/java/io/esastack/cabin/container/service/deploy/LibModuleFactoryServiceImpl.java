@@ -101,6 +101,11 @@ public class LibModuleFactoryServiceImpl implements LibModuleFactoryService<LibM
                 .build();
     }
 
+    @Override
+    public void destroyModule(String name) throws CabinRuntimeException {
+        classLoaderService.destroyLibModuleClassLoader(name);
+    }
+
     private int getPriority(final String name, final Archive archive) {
         try {
             final String priority = archive.getManifest().getMainAttributes().getValue(MANIFEST_MODULE_PRIORITY);

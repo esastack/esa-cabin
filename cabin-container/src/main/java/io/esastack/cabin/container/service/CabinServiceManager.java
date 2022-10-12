@@ -23,6 +23,8 @@ import io.esastack.cabin.api.service.share.SharedResourceService;
 import io.esastack.cabin.common.exception.CabinRuntimeException;
 import io.esastack.cabin.common.log.CabinLoggerFactory;
 import io.esastack.cabin.common.util.ClassLoaderUtils;
+import io.esastack.cabin.container.dynamic.DynamicLoadProcessor;
+import io.esastack.cabin.container.dynamic.DynamicLoadProcessorImpl;
 import io.esastack.cabin.container.initialize.DefaultInitializer;
 import io.esastack.cabin.container.initialize.Initializer;
 import io.esastack.cabin.container.processor.*;
@@ -76,6 +78,8 @@ public class CabinServiceManager {
             this.picoContainer.addComponent(LibModuleExportProcessor.class, LibModuleExportProcessor.class);
             this.picoContainer.addComponent(ContainerStateExportProcessor.class, ContainerStateExportProcessor.class);
             this.picoContainer.addComponent(BizModuleSetupProcessor.class, BizModuleSetupProcessor.class);
+            //dynamic
+            this.picoContainer.addComponent(DynamicLoadProcessor.class, DynamicLoadProcessorImpl.class);
         } catch (Throwable t) {
             LOGGER.error("Failed to create PICO Container", t);
             throw new CabinRuntimeException("Failed to create PICO Container", t);

@@ -54,7 +54,8 @@ public class LibModuleMergeProcessor implements Processor {
             final Map<String, Archive> externalModules = parseLibModulesFromExternalDir();
             final Map<String, Archive> containerModules =
                     parseLibModulesFromContainerArchive(cabinBootContext.getContainerArchive());
-            final Map<String, Archive> modules = parseLibModulesFromURLs(cabinBootContext.getModuleUrls(), false);
+            final Map<String, Archive> modules = parseLibModulesFromURLs(
+                    cabinBootContext.getModuleUrls(), false, false);
             //module prioritized: external modules > nest modules > user dependencies
             modules.putAll(containerModules);
             modules.putAll(externalModules);
@@ -83,7 +84,7 @@ public class LibModuleMergeProcessor implements Processor {
                     }
                     if (urls.size() != 0) {
                         try {
-                            return parseLibModulesFromURLs(urls.toArray(new URL[0]), true);
+                            return parseLibModulesFromURLs(urls.toArray(new URL[0]), true, false);
                         } catch (IOException e) {
                             // never common here.
                         }
@@ -132,8 +133,8 @@ public class LibModuleMergeProcessor implements Processor {
         return containerModules;
     }
 
-    private Map<String, Archive> parseLibModulesFromURLs(
-            final URL[] moduleUrls, final boolean ignoreException) throws IOException {
+    public Map<String, Archive> parseLibModulesFromURLs(
+            final URL[] moduleUrls, final boolean ignoreException, final boolean recursively) throws IOException {
         final Map<String, Archive> urlModules = new HashMap<>();
         if (moduleUrls != null) {
             for (URL moduleUrl : moduleUrls) {
@@ -156,6 +157,9 @@ public class LibModuleMergeProcessor implements Processor {
                     }
                 }
             }
+        }
+        if (recursively) {
+            return parseNestLibModulesRecursively(urlModules);
         }
         return urlModules;
     }

@@ -27,5 +27,7 @@ public interface LibModuleLoadService {
 
     Module getModule(String name);
 
+    Module destroyModule(String name);
+
     List<Module> getAllModules();
 }

@@ -22,4 +22,7 @@ public interface SharedResourceService {
     List<ClassLoader> getResourceClassLoaders(String name);
 
     void addExportClassLoader(String name, ClassLoader classLoader);
+
+    void destroyModuleResources(final String moduleName);
+
 }

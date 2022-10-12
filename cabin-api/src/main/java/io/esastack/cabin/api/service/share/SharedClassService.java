@@ -39,4 +39,6 @@ public interface SharedClassService {
     int getSharedClassCount();
 
     boolean containsClass(final String className);
+
+    void destroyModuleClasses(final String moduleName);
 }
