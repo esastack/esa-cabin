@@ -194,7 +194,7 @@ public class CabinContainer {
         return libModuleLoadService.getModule(moduleName) != null;
     }
 
-    public List<String> getLoadedModule() {
+    public List<String> getLoadedModules() {
         final List<String> modules = new ArrayList<>();
         final LibModuleLoadService libModuleLoadService =
                 CabinServiceManager.get().getService(LibModuleLoadService.class);

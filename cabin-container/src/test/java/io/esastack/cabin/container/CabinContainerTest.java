@@ -67,7 +67,7 @@ public class CabinContainerTest {
         Assert.assertFalse(container.getExportedClasses().isEmpty());
         Assert.assertNotNull(container.getBizModuleClassLoader());
         Assert.assertTrue(container.getBizModuleClassLoader() instanceof BizModuleClassLoader);
-        Assert.assertEquals(2, container.getLoadedModule().size());
+        Assert.assertEquals(2, container.getLoadedModules().size());
 
         LibModuleClassLoader libModuleClassLoader =
                 (LibModuleClassLoader) container.getLibModuleClassLoader("io.esastack_cabin-sample-lib-module");
@@ -79,7 +79,7 @@ public class CabinContainerTest {
         Assert.assertNotNull(libModuleClassLoader.getResource("export.file"));
         Assert.assertNotNull(libModuleClassLoader.getResources("export.file"));
 
-        final String moduleName = container.getLoadedModule().get(0);
+        final String moduleName = container.getLoadedModules().get(0);
         Assert.assertTrue(container.moduleLoaded(moduleName));
         Assert.assertTrue(container.getLibModuleClassLoader(moduleName) instanceof LibModuleClassLoader);
         Assert.assertTrue(CabinContainerUtil.isStarted());

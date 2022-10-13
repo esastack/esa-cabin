@@ -17,6 +17,7 @@ package io.esastack.cabin.common.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +46,11 @@ public class CabinContainerUtil {
         return (boolean) delegate2CabinContainer("moduleLoaded", new Object[]{moduleName});
     }
 
+    @SuppressWarnings("unchecked")
+    public static List<String> getLoadedModules() {
+        return (List<String>) delegate2CabinContainer("getLoadedModules", new Object[0]);
+    }
+
     public static ClassLoader getBizClassLoader() {
         if (bizClassLoader == null) {
             bizClassLoader = (ClassLoader) delegate2CabinContainer(
@@ -53,12 +59,21 @@ public class CabinContainerUtil {
         return bizClassLoader;
     }
 
+    public static ClassLoader getLibModuleClassLoader(final String moduleName) {
+        return (ClassLoader) delegate2CabinContainer("getBizModuleClassLoader", new Object[]{moduleName});
+    }
+
     public static void installModule(final String moduleJarUrl) {
         delegate2CabinContainer("installModule", new Object[] {moduleJarUrl});
     }
 
     public static void uninstallModule(final String moduleName) {
         delegate2CabinContainer("uninstallModule", new Object[] {moduleName});
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Class<?>> getExportedClasses() {
+        return (Map<String, Class<?>>) delegate2CabinContainer("getExportedClasses", new Object[0]);
     }
 
     /**
@@ -84,10 +99,5 @@ public class CabinContainerUtil {
         }
         throw new RuntimeException(
                 String.format("There is no method named %s of CabinContainer!", methodName));
-    }
-
-    @SuppressWarnings("unchecked")
-    public Map<String, Class<?>> getExportedClasses() {
-        return (Map<String, Class<?>>) delegate2CabinContainer("getExportedClasses", new Object[0]);
     }
 }
