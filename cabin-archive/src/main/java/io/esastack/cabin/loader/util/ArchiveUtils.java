@@ -173,8 +173,8 @@ public class ArchiveUtils {
     }
 
     public static boolean isCabinContainerJar(final java.util.jar.JarFile jarFile) throws Exception {
-        final Attributes attributes = jarFile.getManifest().getMainAttributes();
-        return attributes.getValue(MANIFEST_CABIN_VERSION) != null;
+        return jarFile.getManifest() != null &&
+                jarFile.getManifest().getMainAttributes().getValue(MANIFEST_CABIN_VERSION) != null;
     }
 
     public static boolean isCabinModuleJar(final java.util.jar.JarFile jarFile) throws Exception {
