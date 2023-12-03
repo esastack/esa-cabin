@@ -100,7 +100,9 @@ ESA Cabin用于解决模块间类冲突。要解决的问题是，当一个应�
 + 在xxx-cabin的pom中加入cabin-module-maven-plugin插件，并配置相关信息
 <br>
 下面用ESA RPC举例讲解如何打包：
+
 + esa-rpc-cabin (会传递三方依赖)
+
 ```xml
 <dependencies>
     ...加入需要合并打包的module和依赖
